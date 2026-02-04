@@ -1,6 +1,6 @@
-"""Go1 IsaacLab task scaffolding."""
+"""Go1 locomotion task scaffolding for IsaacLab."""
 
-from isaaclab_tasks.go1.config import Go1TaskCfg
-from isaaclab_tasks.go1.task import Go1LocomotionTask
+from .go1_config import Go1TaskCfg
+from .go1_task import Go1LeggedRobotTask
 
-__all__ = ["Go1LocomotionTask", "Go1TaskCfg"]
+__all__ = ["Go1TaskCfg", "Go1LeggedRobotTask"]

@@ -1,1 +1,1 @@
-"""IsaacLab task scaffolding for Walk These Ways."""
+"""IsaacLab task scaffolding for the Walk These Ways environments."""
