@@ -7,15 +7,23 @@ from typing import Tuple
 @dataclass(frozen=True)
 class Go1TerrainCfg:
     mesh_type: str = "trimesh"
+    curriculum: bool = True
+    selected: bool = False
+    terrain_kwargs: dict | None = None
     num_rows: int = 30
     num_cols: int = 30
     terrain_width: float = 5.0
     terrain_length: float = 5.0
     horizontal_scale: float = 0.10
     vertical_scale: float = 0.005
+    slope_treshold: float = 0.75
     border_size: float = 0.0
     center_robots: bool = True
     center_span: int = 4
+    terrain_noise_magnitude: float = 0.1
+    terrain_smoothness: float = 0.005
+    difficulty_scale: float = 1.0
+    max_platform_height: float = 0.2
     terrain_proportions: Tuple[float, ...] = (
         0.2,
         0.2,
