@@ -13,6 +13,8 @@ class Go1LeggedRobotTask:
         self.cfg = cfg or Go1TaskCfg()
         self.kwargs = kwargs
         self._initialized = False
+        self._buffers: Dict[str, Any] = {}
+        self._extras: Dict[str, Any] = {}
 
     @classmethod
     def from_legged_robot_defaults(cls, **kwargs: Any) -> "Go1LeggedRobotTask":
@@ -22,18 +24,34 @@ class Go1LeggedRobotTask:
     def setup_scene(self) -> None:
         """Placeholder for IsaacLab scene creation (assets, terrain, sensors)."""
         self._initialized = True
+        self._buffers = {
+            "obs": None,
+            "privileged_obs": None,
+            "obs_history": None,
+            "reward": None,
+            "done": None,
+        }
 
     def reset(self) -> Dict[str, Any]:
         """Reset the task and return the initial observations."""
         if not self._initialized:
             self.setup_scene()
-        return {"obs": None, "privileged_obs": None, "obs_history": None}
+        return {
+            "obs": self._buffers["obs"],
+            "privileged_obs": self._buffers["privileged_obs"],
+            "obs_history": self._buffers["obs_history"],
+        }
 
     def step(self, actions: Any) -> Dict[str, Any]:
         """Advance the simulation by one policy step."""
         if not self._initialized:
             self.setup_scene()
-        return {"obs": None, "reward": None, "done": None, "info": None}
+        return {
+            "obs": self._buffers["obs"],
+            "reward": self._buffers["reward"],
+            "done": self._buffers["done"],
+            "info": self._extras,
+        }
 
     def to_dict(self) -> Dict[str, Any]:
         """Serialize the task configuration for logging or debugging."""
