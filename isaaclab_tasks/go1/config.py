@@ -7,6 +7,9 @@ from typing import Tuple
 @dataclass(frozen=True)
 class Go1TerrainCfg:
     mesh_type: str = "trimesh"
+    curriculum: bool = True
+    min_init_terrain_level: int = 0
+    max_init_terrain_level: int = 5
     num_rows: int = 30
     num_cols: int = 30
     terrain_width: float = 5.0
@@ -53,12 +56,19 @@ class Go1CommandsCfg:
 class Go1ControlCfg:
     decimation: int = 4
     control_type: str = "actuator_net"
+    action_scale: float = 0.5
+    hip_scale_reduction: float = 1.0
+    clip_actions: float = 1.0
 
 
 @dataclass(frozen=True)
 class Go1EnvCfg:
     num_envs: int = 4000
     max_episode_length: int = 1000
+    num_actions: int = 12
+    num_dof: int = 12
+    num_bodies: int = 17
+    num_feet: int = 4
     num_observations: int = 70
     num_privileged_obs: int = 2
     num_observation_history: int = 30
@@ -66,6 +76,9 @@ class Go1EnvCfg:
     observe_gait_commands: bool = True
     observe_clock_inputs: bool = True
     observe_two_prev_actions: bool = True
+    termination_contact_indices: Tuple[int, ...] = ()
+    use_terminal_body_height: bool = False
+    terminal_body_height: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -97,6 +110,12 @@ class Go1TaskCfg:
             raise ValueError("num_observations must be positive.")
         if self.env.num_envs <= 0:
             raise ValueError("num_envs must be positive.")
+        if self.env.num_actions <= 0:
+            raise ValueError("num_actions must be positive.")
+        if self.env.num_dof <= 0:
+            raise ValueError("num_dof must be positive.")
+        if self.env.num_bodies <= 0:
+            raise ValueError("num_bodies must be positive.")
         if self.control.decimation <= 0:
             raise ValueError("control.decimation must be positive.")
         if self.terrain.num_rows <= 0 or self.terrain.num_cols <= 0:
